@@ -1,0 +1,162 @@
+:root {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #172033;
+  background: #f3f5f8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+}
+
+/* El ancho máximo mantiene la lista legible y clamp adapta el espacio interior al ancho de la pantalla. */
+.todo-app {
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: white;
+  border: 1px solid #d4dae3;
+  border-radius: 0.75rem;
+}
+
+h1,
+h2 {
+  line-height: 1.2;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  color: white;
+  background: #244d96;
+  cursor: pointer;
+}
+
+button:disabled {
+  color: #59616d;
+  background: #e7ebf0;
+  border-color: #d4dae3;
+  cursor: default;
+}
+
+/* El contorno permite seguir el foco al recorrer los controles con el teclado. */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #244d96;
+  outline-offset: 3px;
+}
+
+.help-button {
+  color: #244d96;
+  background: white;
+  border-color: #244d96;
+}
+
+.task-form {
+  margin: 1.5rem 0;
+}
+
+.task-form > label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.task-form-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-form-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #7d8794;
+  border-radius: 0.4rem;
+}
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #d4dae3;
+}
+
+.task-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.task-label input {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Un título largo sin espacios puede partirse para evitar que la fila desborde la pantalla. */
+.task-title {
+  overflow-wrap: anywhere;
+}
+
+.task-title.completed {
+  color: #59616d;
+  text-decoration: line-through;
+}
+
+.delete-button {
+  flex: none;
+}
+
+.empty-state {
+  padding: 1rem;
+  color: #475466;
+  background: #f3f5f8;
+  border-radius: 0.4rem;
+}
+
+/* En pantallas estrechas se apilan el campo y el botón, y las acciones de cada tarea pueden pasar a otra línea. */
+@media (max-width: 30rem) {
+  .todo-app {
+    margin: 0 auto;
+  }
+
+  .task-form-row {
+    flex-direction: column;
+  }
+
+  .task-item {
+    flex-wrap: wrap;
+  }
+}
