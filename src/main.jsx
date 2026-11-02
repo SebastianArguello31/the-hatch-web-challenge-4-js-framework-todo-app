@@ -1,48 +1,16 @@
-import { createElement, createStore, render } from "./framework/mini-framework.js";
-
+import { createElement, render } from "./framework/mini-framework.js";
+import { actions, taskStore } from "./store/taskStore.js";
 import { App } from "./App.jsx";
 import "./styles.css";
 
-const initialState = {
-    showHelp: false,
-    tasks: [
-        {
-            id: 1,
-            title: "Leer el enunciado del challenge",
-            completed: true
-        },
-        {
-            id: 2,
-            title: "Preparar la presentación del framework",
-            completed: false
-        }
-    ]
-};
-
-function reducer(state, action) {
-    if (action.type === "help/toggle") {
-        return {
-            ...state,
-            showHelp: !state.showHelp
-        };
-    }
-
-    return state;
-}
-
-const store = createStore(reducer, initialState);
 const container = document.getElementById("app");
-
-function toggleHelp() {
-    store.dispatch({ type: "help/toggle" });
-}
 
 function updateView() {
     render(
-        <App state={store.getState()} onToggleHelp={toggleHelp} />,
+        <App state={taskStore.getState()} actions={actions} />,
         container
     );
 }
 
-store.subscribe(updateView);
+taskStore.subscribe(updateView);
 updateView();
