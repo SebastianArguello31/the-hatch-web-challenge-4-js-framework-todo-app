@@ -1,8 +1,11 @@
 import { createStore } from "../framework/mini-framework.js";
+import { loadTaskData, saveTaskData } from "./taskStorage.js";
+
+const filters = ["all", "pending", "completed"];
 
 const initialState = {
-    tasks: [],
-    nextTaskId: 1,
+    ...loadTaskData(),
+    filter: "all",
     showHelp: false
 };
 
@@ -34,30 +37,20 @@ export function taskReducer(state, action) {
 
         case "task/toggle": {
             const id = action.payload;
-            const exists = state.tasks.some((task) => task.id === id);
 
-            if (!exists) {
+            if (!state.tasks.some((task) => task.id === id)) {
                 return state;
             }
 
-            const tasks = state.tasks.map((task) => {
-                if (task.id !== id) {
-                    return task;
-                }
-
-                return {
-                    ...task,
-                    completed: !task.completed
-                };
-            });
+            const tasks = state.tasks.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            );
 
             return { ...state, tasks };
         }
 
         case "task/remove": {
-            const tasks = state.tasks.filter(
-                (task) => task.id !== action.payload
-            );
+            const tasks = state.tasks.filter((task) => task.id !== action.payload);
 
             if (tasks.length === state.tasks.length) {
                 return state;
@@ -66,18 +59,48 @@ export function taskReducer(state, action) {
             return { ...state, tasks };
         }
 
+        case "filter/set": {
+            const filter = action.payload;
+
+            if (!filters.includes(filter) || filter === state.filter) {
+                return state;
+            }
+
+            return { ...state, filter };
+        }
+
         case "help/toggle":
-            return {
-                ...state,
-                showHelp: !state.showHelp
-            };
+            return { ...state, showHelp: !state.showHelp };
 
         default:
             return state;
     }
 }
 
+export function getVisibleTasks(tasks, filter) {
+    if (filter === "pending") {
+        return tasks.filter((task) => !task.completed);
+    }
+
+    if (filter === "completed") {
+        return tasks.filter((task) => task.completed);
+    }
+
+    return tasks;
+}
+
 export const taskStore = createStore(taskReducer, initialState);
+
+let previousTasks = initialState.tasks;
+
+taskStore.subscribe(() => {
+    const state = taskStore.getState();
+
+    if (state.tasks !== previousTasks) {
+        saveTaskData(state);
+        previousTasks = state.tasks;
+    }
+});
 
 export const actions = {
     addTask(title) {
@@ -90,6 +113,10 @@ export const actions = {
 
     removeTask(id) {
         taskStore.dispatch({ type: "task/remove", payload: id });
+    },
+
+    setFilter(filter) {
+        taskStore.dispatch({ type: "filter/set", payload: filter });
     },
 
     toggleHelp() {
