@@ -1,9 +1,9 @@
 import { createElement } from "../framework/mini-framework.js";
 import { TaskItem } from "./TaskItem.jsx";
 
-export function TaskList({ tasks, onToggle, onRemove }) {
+export function TaskList({ tasks, onToggle, onRemove, emptyMessage = "Todavía no hay tareas." }) {
     if (tasks.length === 0) {
-        return <p className="empty-state">Todavía no hay tareas.</p>;
+        return <p className="empty-state">{emptyMessage}</p>;
     }
 
     return (
