@@ -3,6 +3,7 @@ import { TaskForm } from "./components/TaskForm.jsx";
 import { TaskList } from "./components/TaskList.jsx";
 import { getVisibleTasks } from "./store/taskStore.js";
 
+// Una lista sin tareas y un filtro sin coincidencias necesitan mensajes distintos.
 function getEmptyMessage(total, filter) {
     if (total === 0) {
         return "Todavía no hay tareas.";
@@ -16,6 +17,7 @@ function getEmptyMessage(total, filter) {
 }
 
 export function App({ state, actions }) {
+    // Los contadores describen todas las tareas, mientras que TaskList recibe solo las que pasan el filtro.
     const total = state.tasks.length;
     const pending = state.tasks.filter((task) => !task.completed).length;
     const visibleTasks = getVisibleTasks(state.tasks, state.filter);

@@ -6,6 +6,7 @@ export function TaskForm({ onAdd }) {
 
         const form = event.currentTarget;
         const input = form.elements.namedItem("title");
+        // required detecta el campo vacío; trim permite detectar también un título compuesto solo por espacios.
         const title = input.value.trim();
 
         if (title === "") {
@@ -14,11 +15,13 @@ export function TaskForm({ onAdd }) {
             return;
         }
 
+        // El formulario comunica el título al store y devuelve el foco al campo para escribir la siguiente tarea.
         onAdd(title);
         form.reset();
         input.focus();
     }
 
+    // Al editar el campo se retira el error personalizado para que el navegador permita un nuevo envío.
     function clearValidation(event) {
         event.currentTarget.setCustomValidity("");
     }

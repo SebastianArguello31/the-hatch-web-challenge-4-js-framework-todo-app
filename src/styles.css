@@ -14,6 +14,7 @@ body {
   padding: 1rem;
 }
 
+/* El ancho máximo mantiene la lista legible y clamp adapta el espacio interior al ancho de la pantalla. */
 .todo-app {
   max-width: 40rem;
   margin: 2rem auto;
@@ -59,6 +60,7 @@ button:disabled {
   cursor: default;
 }
 
+/* El contorno permite seguir el foco al recorrer los controles con el teclado. */
 button:focus-visible,
 input:focus-visible {
   outline: 3px solid #244d96;
@@ -123,6 +125,7 @@ input:focus-visible {
   height: 1.1rem;
 }
 
+/* Un título largo sin espacios puede partirse para evitar que la fila desborde la pantalla. */
 .task-title {
   overflow-wrap: anywhere;
 }
@@ -143,6 +146,7 @@ input:focus-visible {
   border-radius: 0.4rem;
 }
 
+/* En pantallas estrechas se apilan el campo y el botón, y las acciones de cada tarea pueden pasar a otra línea. */
 @media (max-width: 30rem) {
   .todo-app {
     margin: 0 auto;

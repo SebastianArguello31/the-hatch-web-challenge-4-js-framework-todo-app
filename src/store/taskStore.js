@@ -3,12 +3,14 @@ import { loadTaskData, saveTaskData } from "./taskStorage.js";
 
 const filters = ["all", "pending", "completed"];
 
+// Al recargar se recuperan las tareas y su próximo id. La ayuda y el filtro empiezan con sus valores iniciales.
 const initialState = {
     ...loadTaskData(),
     filter: "all",
     showHelp: false
 };
 
+// El reducer calcula el siguiente estado. Devolver la referencia anterior evita notificar un cambio inexistente.
 export function taskReducer(state, action) {
     switch (action.type) {
         case "task/add": {
@@ -42,6 +44,7 @@ export function taskReducer(state, action) {
                 return state;
             }
 
+            // Solo la tarea seleccionada recibe un objeto nuevo; las demás conservan su referencia.
             const tasks = state.tasks.map((task) =>
                 task.id === id ? { ...task, completed: !task.completed } : task
             );
@@ -77,6 +80,7 @@ export function taskReducer(state, action) {
     }
 }
 
+// El filtro selecciona las filas que se muestran sin eliminar tareas del estado.
 export function getVisibleTasks(tasks, filter) {
     if (filter === "pending") {
         return tasks.filter((task) => !task.completed);
@@ -96,12 +100,14 @@ let previousTasks = initialState.tasks;
 taskStore.subscribe(() => {
     const state = taskStore.getState();
 
+    // Abrir la ayuda o cambiar el filtro conserva el array de tareas y evita una escritura en localStorage.
     if (state.tasks !== previousTasks) {
         saveTaskData(state);
         previousTasks = state.tasks;
     }
 });
 
+// Los componentes llaman a estos métodos con un título o id; dispatch entrega la acción al reducer.
 export const actions = {
     addTask(title) {
         taskStore.dispatch({ type: "task/add", payload: title });

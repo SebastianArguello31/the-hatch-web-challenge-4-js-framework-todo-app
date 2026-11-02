@@ -1,3 +1,4 @@
+// La clave identifica el formato de esta aplicación dentro del almacenamiento del sitio.
 const STORAGE_KEY = "ch4.todo.v1";
 
 function emptyTaskData() {
@@ -15,6 +16,7 @@ function isValidTaskData(data) {
         return false;
     }
 
+    // Dos tareas con el mismo id compartirían clave en el DOM. Además, nextTaskId debe superar todos los ids recuperados.
     const ids = new Set();
 
     for (const task of data.tasks) {
@@ -38,6 +40,7 @@ function isValidTaskData(data) {
     return true;
 }
 
+// Al iniciar se valida el contenido guardado. Si está dañado o no hay navegador, se parte de una lista vacía.
 export function loadTaskData() {
     if (typeof window === "undefined") {
         return emptyTaskData();
@@ -67,6 +70,7 @@ export function loadTaskData() {
     }
 }
 
+// Guardar el próximo id junto a las tareas permite continuar la numeración incluso después de vaciar la lista.
 export function saveTaskData({ tasks, nextTaskId }) {
     if (typeof window === "undefined") {
         return;
