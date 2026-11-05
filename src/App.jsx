@@ -1,6 +1,7 @@
 import { createElement } from "./framework/mini-framework.js";
 import { TaskForm } from "./components/TaskForm.jsx";
 import { TaskList } from "./components/TaskList.jsx";
+import { BotonAyuda } from "./components/BotonAyuda.jsx";
 import { getVisibleTasks } from "./store/taskStore.js";
 
 // Una lista sin tareas y un filtro sin coincidencias necesitan mensajes distintos.
@@ -27,19 +28,7 @@ export function App({ state, actions }) {
             <header>
                 <h1>Mis tareas</h1>
 
-                <button type="button" className="help-button" aria-expanded={state.showHelp} aria-controls="help-content" onClick={actions.toggleHelp}>
-                    {state.showHelp ? "Ocultar ayuda" : "Mostrar ayuda"}
-                </button>
-
-                <div id="help-content">
-                    {state.showHelp && (
-                        <p>
-                            Escribe una tarea y pulsa Agregar o Enter.
-                            Usa la casilla para cambiar su estado y el filtro para
-                            elegir qué tareas ver.
-                        </p>
-                    )}
-                </div>
+                <BotonAyuda showHelp={state.showHelp} onToggle={actions.toggleHelp}/>
             </header>
 
             <TaskForm onAdd={actions.addTask} />
